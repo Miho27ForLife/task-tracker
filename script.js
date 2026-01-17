@@ -7,6 +7,8 @@ if (localStorage.getItem("tasks")) {
 const addTaskBtn = document.getElementById("addTaskBtn");
 const taskInput = document.getElementById("taskInput");
 const taskList = document.getElementById("taskList");
+const comList = document.getElementById("comList");
+const remList = document.getElementById("remList");
 renderTask();
 // Load from localStorage here (optional)
 // then helper function
@@ -43,6 +45,8 @@ function addTask(){
 function renderTask() {
     // 1. Clear the current list in the DOM
     taskList.innerHTML = "";
+    remList.innerHTML = "";
+    comList.innerHTML = "";
 
     // 2. Loop over the tasks array
     tasks.forEach(function(task) {
@@ -65,8 +69,18 @@ function renderTask() {
 
         });
         if (task.completed === true) {
+            const ci = document.createElement("li");
+            ci.textContent = task.text;
+            comList.appendChild(ci);
+            
+            
             completedBtn.textContent = "Uncomplete";
             li.style.textDecoration = "line-through";};
+        if (task.completed === false) {
+            const ri = document.createElement("li");
+            ri.textContent = task.text;
+            remList.appendChild(ri);};
+        
         li.appendChild(completedBtn);
         li.appendChild(deleteBtn);
         taskList.appendChild(li);

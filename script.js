@@ -1,18 +1,70 @@
 const addTaskBtn = document.getElementById("addTaskBtn");
 const taskInput = document.getElementById("taskInput");
 const taskList = document.getElementById("taskList");
+let tasks = [];
 
-addTaskBtn.addEventListener("click", addTask)
-function addTask() {
+addTaskBtn.addEventListener("click", addTask) 
+function addTask(){
     const taskText = taskInput.value;
 
-    if (taskText === "") {
-        return;
-    }
+    if (taskText === "") return;
 
-    const li = document.createElement("li");
-    li.textContent = taskText;
+    // Create a task object
+    const task = {
+    id: Date.now(), // unique number based on current time
+    text: taskText,
+    completed: false
+};
 
-    taskList.appendChild(li);
+
+    // Add to tasks array
+    tasks.push(task);
+
+    // Render all tasks
+    renderTask();
+
+    // Clear input
     taskInput.value = "";
 };
+
+function renderTask() {
+    // 1. Clear the current list in the DOM
+    taskList.innerHTML = "";
+
+    // 2. Loop over the tasks array
+    tasks.forEach(function(task) {
+        const li = document.createElement("li");
+        li.textContent = task.text;
+        
+        const completedBtn = document.createElement("button");
+        completedBtn.textContent = "Completed";
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Delete";
+
+        // Add click listener to delete this task
+        deleteBtn.addEventListener("click", function() {
+            deleteTask(task.id);
+        });
+        completedBtn.addEventListener("click", function() {
+            task.completed = true;
+            renderTask();
+
+        });
+        if (task.completed === true) {
+        li.style.textDecoration = "line-through";};
+        li.appendChild(completedBtn);
+        li.appendChild(deleteBtn);
+        taskList.appendChild(li);
+    });
+
+}
+function deleteTask(id) {
+    // Remove the task with matching id from the array
+    tasks = tasks.filter(function(task) {
+        return task.id !== id;
+    });
+
+    // Re-render the updated array
+    renderTask();
+}
+

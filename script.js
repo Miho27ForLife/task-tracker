@@ -1,8 +1,20 @@
+let tasks = [];
+// Load tasks from localStorage if they exist
+if (localStorage.getItem("tasks")) {
+    tasks = JSON.parse(localStorage.getItem("tasks"));
+}
+
 const addTaskBtn = document.getElementById("addTaskBtn");
 const taskInput = document.getElementById("taskInput");
 const taskList = document.getElementById("taskList");
-let tasks = [];
+renderTask();
+// Load from localStorage here (optional)
+// then helper function
+function saveTasks() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
 
+// then addTask(), renderTask(), deleteTask(), etc.
 addTaskBtn.addEventListener("click", addTask) 
 function addTask(){
     const taskText = taskInput.value;
@@ -25,6 +37,7 @@ function addTask(){
 
     // Clear input
     taskInput.value = "";
+    saveTasks();
 };
 
 function renderTask() {
@@ -46,16 +59,19 @@ function renderTask() {
             deleteTask(task.id);
         });
         completedBtn.addEventListener("click", function() {
-            task.completed = true;
+            task.completed = !task.completed;
             renderTask();
+            saveTasks();
 
         });
         if (task.completed === true) {
-        li.style.textDecoration = "line-through";};
+            completedBtn.textContent = "Uncomplete";
+            li.style.textDecoration = "line-through";};
         li.appendChild(completedBtn);
         li.appendChild(deleteBtn);
         taskList.appendChild(li);
     });
+    
 
 }
 function deleteTask(id) {
@@ -66,5 +82,6 @@ function deleteTask(id) {
 
     // Re-render the updated array
     renderTask();
+    saveTasks();
 }
 

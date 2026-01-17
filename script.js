@@ -2,7 +2,8 @@ const addTaskBtn = document.getElementById("addTaskBtn");
 const taskInput = document.getElementById("taskInput");
 const taskList = document.getElementById("taskList");
 
-addTaskBtn.addEventListener("click", function () {
+addTaskBtn.addEventListener("click", addTask)
+function addTask() {
     const taskText = taskInput.value;
 
     if (taskText === "") {
@@ -14,4 +15,4 @@ addTaskBtn.addEventListener("click", function () {
 
     taskList.appendChild(li);
     taskInput.value = "";
-});
+};

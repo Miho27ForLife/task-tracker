@@ -20,7 +20,9 @@ function saveTasks() {
 addTaskBtn.addEventListener("click", addTask) 
 function addTask(){
     const taskText = taskInput.value;
-
+    fetch('http://localhost:3001/tasks', function(req, res){
+        METHOD 
+    })
     if (taskText === "") return;
 
     // Create a task object
